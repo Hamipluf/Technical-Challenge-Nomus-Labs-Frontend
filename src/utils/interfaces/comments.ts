@@ -13,7 +13,7 @@ interface comment {
 }
 export interface addComment {
     content: string
-    cid: number
+    pid: number
 }
 export interface dataAddComment extends response {
     data: comment
