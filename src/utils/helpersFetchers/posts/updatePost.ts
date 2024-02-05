@@ -3,10 +3,10 @@ import { updatePost as updatePostInterface, dataUpdatePost } from '../../interfa
 // URL  
 import { url_produciton } from '../baseUrl';
 export const updatePost = async (data: updatePostInterface,): Promise<dataUpdatePost> => {
-    const tid = data.pid
+    const pid = data.pid
     try {
         const response = await axios.post(
-            `${url_produciton}/api/posts/editPost/${tid}`,
+            `${url_produciton}/api/posts/editPost/${pid}`,
             data.content
         );
         return response.data
