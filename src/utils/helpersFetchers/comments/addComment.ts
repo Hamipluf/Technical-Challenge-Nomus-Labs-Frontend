@@ -3,10 +3,10 @@ import { addComment as addCommentInterface, dataAddComment } from '../../interfa
 // URL
 import { url_produciton } from '../baseUrl';
 export const addCOmment = async (data: addCommentInterface): Promise<dataAddComment> => {
-    const cid = data.cid
+    const pid = data.pid
     try {
         const response = await axios.post(
-            `${url_produciton}/api/comments/addComment/${cid}`,
+            `${url_produciton}/api/comments/addComment/${pid}`,
             data.content
         );
         return response.data
