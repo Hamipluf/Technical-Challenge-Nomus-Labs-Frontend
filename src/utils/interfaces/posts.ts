@@ -15,6 +15,14 @@ interface like {
     post_id: number,
     created_at: Date
 }
+export interface feed {
+    pag: number,
+    hasNextPage: boolean,
+    hasPreviousPage: boolean,
+    totalPages: number,
+    totalDocuments: number,
+    posts: [posts]
+}
 export interface createPost {
     content: string
 }
@@ -32,14 +40,7 @@ export interface dataCreatePost extends response {
 }
 
 export interface dataFeed extends response {
-    data: {
-        pag: number,
-        hasNextPage: boolean,
-        hasPreviousPage: boolean,
-        totalPages: number,
-        totalDocuments: number,
-        posts: [posts]
-    }
+    data: feed
 
 }
 export interface dataUpdatePost extends dataCreatePost {

@@ -1,19 +1,17 @@
 import axios from 'axios'
-import { dataFeed } from '../../interfaces/posts';
-// URL
+import { currentUser } from '../../interfaces/user';
 import { url_produciton } from '../baseUrl';
-export const getFeed = async (): Promise<dataFeed> => {
+export const getCurrent = async (): Promise<currentUser> => {
     const token = localStorage.getItem('jwt')
     try {
         const response = await axios.get(
-            `${url_produciton}/api/posts/feed`,
+            `${url_produciton}/api/users/current`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
         );
-        console.log(response)
         return response.data
     } catch (error: any) {
         return error.response.data;

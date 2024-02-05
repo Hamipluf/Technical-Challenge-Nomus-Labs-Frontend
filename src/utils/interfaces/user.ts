@@ -9,6 +9,12 @@ export interface formUser {
     password: string
 }
 
+export interface currentUser extends response {
+    data: {
+        currentUserId: number,
+        token: string
+    }
+}
 
 export interface dataLogin extends response {
     data: {
