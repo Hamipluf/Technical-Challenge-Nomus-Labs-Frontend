@@ -110,12 +110,12 @@ const Feed: React.FC = () => {
                 </div>
 
                 <div>
-                  <div className="flex items-start justify-between text-slate-500">
-                    <div>
-                      <CommentButton postId={item.id} />
-                    </div>
+                  <div className="">
                     <div>
                       <LikeButton postId={item.id} />
+                    </div>
+                    <div>
+                      <CommentButton postId={item.id} />
                     </div>
                   </div>
                 </div>

@@ -12,9 +12,9 @@ export const getCurrent = async (): Promise<currentUser> => {
                 }
             }
         );
-        if (response.data.data.token) {
+        if (response.data.data) {
             localStorage.setItem("jwt", response.data.data.token);
-            localStorage.setItem("uid", response.data.data.currentUserId);
+            localStorage.setItem("uid", response.data.data.user.id);
         }
         return response.data
     } catch (error: any) {

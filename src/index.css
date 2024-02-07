@@ -7,3 +7,20 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.scroll-bar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-bar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+.scroll-bar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -8,7 +8,7 @@ const Onboarding: React.FC = () => {
       <NavBar />
       <section className="py-32 lg:py-36 bg-white">
         <div className="mx-auto lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12">
-          <div className="absolute w-full lg:w-1/2 inset-y-0 lg:right-0 hidden lg:block">
+          <div className="absolute max-h-fit w-full lg:w-1/2 inset-y-0 lg:right-0 hidden lg:block">
             <span className="absolute -left-6 md:left-4 top-24 lg:top-28 w-24 h-24 rotate-90 skew-x-12 rounded-3xl bg-green-400 blur-xl opacity-60 lg:opacity-95 lg:block hidden"></span>
             <span className="absolute right-4 bottom-12 w-24 h-24 rounded-3xl bg-blue-600 blur-xl opacity-80"></span>
           </div>
@@ -33,10 +33,10 @@ const Onboarding: React.FC = () => {
               libero sequi quos eos velit
             </p>
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/register")}
               className="btn btn-outline btn-secondary my-5"
             >
-              Login
+              Register
             </button>
           </div>
           <div className="flex flex-1 lg:w-1/2 lg:h-auto relative lg:max-w-none lg:mx-0 mx-auto max-w-3xl">

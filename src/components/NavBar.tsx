@@ -1,12 +1,14 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="mx-auto my-3 lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5">
         <nav className="w-full flex justify-between gap-6 relative">
           <div className="min-w-max inline-flex relative">
-            <a href="/" className="relative flex items-center gap-3">
+            <Link to="/" className="relative flex items-center gap-3">
               <img
                 className="w-10 h-10"
                 src="https://media.licdn.com/dms/image/C4E0BAQEWXlVSavMv_g/company-logo_200_200/0/1638278115694?e=1715212800&v=beta&t=ilai4K9qJY9aPK4-0ERC_coUN7z2Krm3oPyWKp9PJ_U"
@@ -15,11 +17,10 @@ const NavBar = () => {
               <div className="inline-flex text-lg font-semibold text-gray-900 text-white">
                 Nomus Labs
               </div>
-            </a>
+            </Link>
           </div>
 
           <div
-            data-nav-overlay
             aria-hidden="true"
             className="fixed hidden inset-0 lg:!hidden bg-gray-800/60 bg-opacity-50 backdrop-filter backdrop-blur-xl"
           ></div>
@@ -29,38 +30,44 @@ const NavBar = () => {
           >
             <ul className="border-t border-gray-100  lg:border-t-0 px-6 lg:px-0 pt-6 lg:pt-0 flex flex-col lg:flex-row gap-y-4 gap-x-3 text-lg text-gray-700 w-full lg:justify-around lg:items-center">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="duration-300 font-medium ease-linear hover:text-white py-3"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="duration-300 font-medium ease-linear hover:text-white py-3"
                 >
                   Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="duration-300 font-medium ease-linear hover:text-white py-3"
                 >
                   About us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="duration-300 font-medium ease-linear hover:text-white py-3"
                 >
                   Features
-                </a>
+                </Link>
               </li>
             </ul>
+            <button
+              onClick={() => navigate("/login")}
+              className="btn btn-outline btn-secondary btn-wide z-10"
+            >
+              Login
+            </button>
           </div>
 
           <div className="min-w-max flex items-center gap-x-3">
