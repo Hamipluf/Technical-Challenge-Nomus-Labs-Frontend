@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { user } from "../utils/interfaces/user";
-import FollowButton from "./FollowButton";
+import { user } from "../../utils/interfaces/user";
+import FollowButton from "../layout/FollowButton";
 interface UserSearchProps {
   onSearch: (query: string) => void;
   users: user[] | undefined;

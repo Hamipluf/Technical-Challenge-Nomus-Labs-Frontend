@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrent } from "./utils/helpersFetchers/user/getCurrent";
+import Notifications from "./pages/Notifications";
+import Register from "./pages/Register";
 
 const App: React.FC = () => {
   const token = localStorage.getItem("jwt");
@@ -21,10 +23,12 @@ const App: React.FC = () => {
       <Routes>
         <Route index element={<Root />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           element={<ProtectedRoute redirectTo="/login" queryData={queryData} />}
         >
           <Route path="/home" element={<Home />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>

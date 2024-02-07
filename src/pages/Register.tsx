@@ -1,16 +1,12 @@
 import React from "react";
-import SideBar from "../components/layout/SideBar";
-import Feed from "../components/users/Feed";
+// Components
+import RegisterForm from "../components/layout/RegisterForm";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-const Home: React.FC = () => {
+const Register: React.FC = () => {
   return (
     <>
-      <div className="flex">
-        <SideBar />
-        <Feed />
-      </div>
+      <RegisterForm />
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
@@ -27,4 +23,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Register;

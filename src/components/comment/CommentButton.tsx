@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { getCommentOfPost } from "../utils/helpersFetchers/comments/getCommentOfPost";
+import { getCommentOfPost } from "../../utils/helpersFetchers/comments/getCommentOfPost";
 import {
   getCommentOfPost as getCommentPostInterface,
   comment,
-} from "../utils/interfaces/comments";
-import { addComment } from "../utils/helpersFetchers/comments/addComment";
+} from "../../utils/interfaces/comments";
+import { addComment } from "../../utils/helpersFetchers/comments/addComment";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import '../index.css'
+import "../../index.css";
+import useCreateNotification from "../../hooks/useCreateNotification";
 
 const CommentButton: React.FC<{ postId: number }> = ({ postId }) => {
   const queryClient = useQueryClient();
+  const { createNotification } = useCreateNotification();
   const [add, setAdd] = useState(false);
   const [commentContent, setCommentContent] = useState("");
   const [show, setShow] = useState(false);
@@ -30,6 +32,14 @@ const CommentButton: React.FC<{ postId: number }> = ({ postId }) => {
         toast.error(data.message);
       } else {
         toast.success(data.message);
+        if (data.data.post_id && data.data.user_id && data.data.id) {
+          createNotification(
+            data.data.user_id,
+            data.data.post_id,
+            "Comment",
+            data.data.id
+          );
+        }
         // @ts-ignore
         queryClient.invalidateQueries("comments");
         // @ts-ignore

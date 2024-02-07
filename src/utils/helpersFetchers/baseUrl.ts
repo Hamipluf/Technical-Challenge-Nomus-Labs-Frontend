@@ -1,2 +1,2 @@
-export const url_produciton = "https://technical-challenge-nomus-labs.onrender.com"
-export const url_development = "http://localhost:3001"
+export const url_produciton = "http://localhost:3001"
+export const url_development = "https://technical-challenge-nomus-labs.onrender.com"

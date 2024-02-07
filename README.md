@@ -1,30 +1,49 @@
-# React + TypeScript + Vite
+# Simple Social Network Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+This project implements a Simple Social Network using Node.js and React.js, featuring basic functionalities such as user registration, login, user search, message posting, following and unfollowing other users, and a feed displaying posts from followed users. Additionally, it includes real-time notifications, direct messaging, and storage of messages in a PostgreSQL database.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
 
-## Expanding the ESLint configuration
+- Node.js
+- React.js
+- PostgreSQL
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+## Implemented Features
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. **Registration and Login:**
+   - Allows users to register and log in.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. **User Search:**
+   - Users can search for others by username.
+
+3. **Posting and Feed:**
+   - Message posting.
+   - Feed displaying posts from followed users.
+
+4. **Follow/Unfollow:**
+   - Users can follow and unfollow other users.
+
+5. **Profile Privacy:**
+   - Configuration of profiles as public or private.
+
+6. **Comments and Likes:**
+   - Comment system on posts.
+   - Ability to give "likes" to posts.
+
+7. **Notifications:**
+   - Notifies users about new followers, comments, and "likes".
+## API Documentation
+
+Explore the API documentation at `/api-docs` for detailed information about the available endpoints and how to interact with them.
+
+## Project Setup
+
+1. **Frontend:**
+   - Navigate to the `frontend` directory
+   - Install dependencies: `npm install`
+   - Start the application: `npm start`
+
+   

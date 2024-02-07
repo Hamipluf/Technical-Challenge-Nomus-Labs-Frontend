@@ -1,11 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
-import { dataGetFollowers, follower } from "../utils/interfaces/user";
+import { dataGetFollowers } from "../../utils/interfaces/user";
 import { toast } from "react-toastify";
-import { followUser } from "../utils/helpersFetchers/user/folowUser";
-import { unfollowUser } from "../utils/helpersFetchers/user/unfollowUser";
-import { getFollowers } from "../utils/helpersFetchers/user/getFollowers";
-
+import { followUser } from "../../utils/helpersFetchers/user/folowUser";
+import { unfollowUser } from "../../utils/helpersFetchers/user/unfollowUser";
+import { getFollowers } from "../../utils/helpersFetchers/user/getFollowers";
 const FollowButton: React.FC<{ uid: number | undefined }> = ({ uid }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const queryClient = useQueryClient();
@@ -58,7 +57,8 @@ const FollowButton: React.FC<{ uid: number | undefined }> = ({ uid }) => {
       toast.error("Error Following.");
     }
   };
-  const handleUnfollow = () => uid ? unfollowMutation.mutate(uid) : toast.error("Error Unfollowing.");
+  const handleUnfollow = () =>
+    uid ? unfollowMutation.mutate(uid) : toast.error("Error Unfollowing.");
 
   return (
     <>

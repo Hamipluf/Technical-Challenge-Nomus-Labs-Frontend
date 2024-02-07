@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { getCurrent } from "../utils/helpersFetchers/user/getCurrent";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -6,7 +6,7 @@ import {
   dataChangePrivacity,
   responseUploadImage,
 } from "../utils/interfaces/user";
-import ProfileImage from "../components/ProfileImage";
+import ProfileImage from "../components/users/ProfileImage";
 import { Link } from "react-router-dom";
 import uploadImage from "../utils/helpersFetchers/user/uploadProfilePicture";
 import { changePrivacity } from "../utils/helpersFetchers/user/changePrivacity";
@@ -14,13 +14,12 @@ import { toast, ToastContainer } from "react-toastify";
 const ProfileUser: React.FC = () => {
   const token = localStorage.getItem("jwt");
   const queryClient = useQueryClient();
+
   const { data: user } = useQuery<currentUser>({
     queryKey: ["user"],
     queryFn: getCurrent,
     enabled: !!token,
   });
-
-  const [is_private, setPrivate] = useState(user?.data.user.is_private || false);
 
   const changePrivacityMutation = useMutation({
     mutationKey: ["privacity"],
@@ -29,10 +28,10 @@ const ProfileUser: React.FC = () => {
       !data.success && toast.error(data.message);
       if (data.success) {
         toast.success(data.message);
-        setPrivate(data.data.is_private);
-        // @ts-ignore
-        queryClient.invalidateQueries(["user"]);
-        // @ts-ignore
+
+        // @ts-expect-error: Not have types
+        queryClient.invalidateQueries("user");
+        // @ts-expect-error: Not have types
         queryClient.refetchQueries("user");
       }
     },
@@ -131,24 +130,77 @@ const ProfileUser: React.FC = () => {
                 </div>
               </div>
             </Link>
+            <Link
+              to="/notifications"
+              className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group"
+            >
+              <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
+                <div>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-bell-filled"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                      d="M14.235 19c.865 0 1.322 1.024 .745 1.668a3.992 3.992 0 0 1 -2.98 1.332a3.992 3.992 0 0 1 -2.98 -1.332c-.552 -.616 -.158 -1.579 .634 -1.661l.11 -.006h4.471z"
+                      strokeWidth="0"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M12 2c1.358 0 2.506 .903 2.875 2.141l.046 .171l.008 .043a8.013 8.013 0 0 1 4.024 6.069l.028 .287l.019 .289v2.931l.021 .136a3 3 0 0 0 1.143 1.847l.167 .117l.162 .099c.86 .487 .56 1.766 -.377 1.864l-.116 .006h-16c-1.028 0 -1.387 -1.364 -.493 -1.87a3 3 0 0 0 1.472 -2.063l.021 -.143l.001 -2.97a8 8 0 0 1 3.821 -6.454l.248 -.146l.01 -.043a3.003 3.003 0 0 1 2.562 -2.29l.182 -.017l.176 -.004z"
+                      strokeWidth="0"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">
+                    Notifications
+                  </p>
+                  <p className="text-slate-400 text-sm hidden md:block">
+                    See yours notifications
+                  </p>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
         <div id="content" className="bg-white/10 col-span-9 rounded-lg p-6">
           <div>
             <h2 className="font-bold py-4 uppercase">
-              {user && user.data.user.is_private ? "Private User" : "Public User"}
+              {user && user.data.user.is_private
+                ? "Private User"
+                : "Public User"}
             </h2>
             <div className="flex items-center justify-start gap-4">
               <button
                 onClick={() => handleChangePrivacity(true)}
-                className={`${user && user.data.user.is_private  ? "btn btn-primary" : "btn btn-outline"}`}
+                disabled={changePrivacityMutation.isPending}
+                className={`${
+                  user && user.data.user.is_private
+                    ? "btn btn-primary"
+                    : "btn btn-outline"
+                }`}
               >
                 Private User
               </button>
 
               <button
                 onClick={() => handleChangePrivacity(false)}
-                className={`${user && user.data.user.is_private  ? "btn btn-outline" : "btn btn-primary"}`}
+                disabled={changePrivacityMutation.isPending}
+                className={`${
+                  user && user.data.user.is_private
+                    ? "btn btn-outline"
+                    : "btn btn-primary"
+                }`}
               >
                 Public User
               </button>

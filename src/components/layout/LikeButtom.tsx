@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { likePost } from "../utils/helpersFetchers/posts/likePost";
-import { unlikePost } from "../utils/helpersFetchers/posts/unlikePost";
+import { likePost } from "../../utils/helpersFetchers/posts/likePost";
+import { unlikePost } from "../../utils/helpersFetchers/posts/unlikePost";
 import { toast } from "react-toastify";
-import { getLikesOfPost } from "../utils/helpersFetchers/posts/getLikesOfPost";
+import { getLikesOfPost } from "../../utils/helpersFetchers/posts/getLikesOfPost";
 import { useQuery } from "@tanstack/react-query";
-import { getLikesOfPost as getLikePostInterface } from "../utils/interfaces/posts";
+import { getLikesOfPost as getLikePostInterface } from "../../utils/interfaces/posts";
+import useCreateNotification from "../../hooks/useCreateNotification";
 
 interface LikeButtonProps {
   postId: number;
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({ postId }) => {
-  const uid = localStorage.getItem("uid");
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
-
+  const { createNotification } = useCreateNotification();
   const { data: dataPost } = useQuery<getLikePostInterface>({
     queryKey: ["likesOfPosts", postId],
     queryFn: getLikesOfPost,
     enabled: !!postId,
   });
-
 
   const likeMutation = useMutation({
     mutationKey: ["like"],
@@ -31,9 +30,17 @@ const LikeButton: React.FC<LikeButtonProps> = ({ postId }) => {
         console.error(data);
         toast.error(data.message);
       } else {
-        // @ts-ignore
+        if (data.data.post_id || data.data.post_id) {
+          createNotification(
+            data.data.user_id,
+            data.data.post_id,
+            "Like",
+            undefined
+          );
+        }
+        // @ts-expect-error: Not have types
         queryClient.invalidateQueries("likesOfPosts");
-        // @ts-ignore
+        // @ts-expect-error: Not have types
         queryClient.refetchQueries("likesOfPosts");
         setLiked(true);
       }
@@ -53,9 +60,9 @@ const LikeButton: React.FC<LikeButtonProps> = ({ postId }) => {
         toast.error(data.message);
       } else {
         setLiked(false);
-        // @ts-ignore
+        // @ts-expect-error: Not have types
         queryClient.invalidateQueries("likesOfPosts");
-        // @ts-ignore
+        // @ts-expect-error: Not have types
         queryClient.refetchQueries("likesOfPosts");
       }
     },

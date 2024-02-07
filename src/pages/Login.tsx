@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 // Components
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/layout/LoginForm";
 // Helpers
 import { getCurrent } from "../utils/helpersFetchers/user/getCurrent";
 import { ToastContainer } from "react-toastify";
@@ -16,6 +16,7 @@ const Login = () => {
     queryFn: getCurrent,
     enabled: !!token, // Enables the request only if a token exists in localStorage
   });
+
   useEffect(() => {
     if (token && data?.success) {
       return navigate("/home");

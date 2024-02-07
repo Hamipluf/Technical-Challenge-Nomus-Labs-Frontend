@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 // Intefaces
-import { formUser } from "../utils/interfaces/user";
+import { formUser } from "../../utils/interfaces/user";
 // Helpers
-import { loginUser } from "../utils/helpersFetchers/user/login";
+import { loginUser } from "../../utils/helpersFetchers/user/login";
 // Toastify
 import { toast } from "react-toastify";
 
