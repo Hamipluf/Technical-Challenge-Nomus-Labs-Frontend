@@ -2,11 +2,16 @@ import axios from 'axios'
 import { dataUnflowUser } from '../../interfaces/user';
 // URL
 import { url_produciton } from '../baseUrl';
-export const unfollowUser = async (params: any): Promise<dataUnflowUser> => {
-    const uid: number = params.queryKey[1]
+export const unfollowUser = async (uid: number): Promise<dataUnflowUser> => {
+    const token = localStorage.getItem('jwt')
+
     try {
         const response = await axios.post(
-            `${url_produciton}/api/users/unfollow/${uid}`,
+            `${url_produciton}/api/users/unfollow/${uid}`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
         );
         return response.data
     } catch (error: any) {

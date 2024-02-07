@@ -2,7 +2,17 @@ interface response {
     success: boolean,
     code: number,
     message: string,
-} 
+}
+
+export interface follower {
+    user_id: number,
+    follower_username: string,
+    is_private: boolean
+}
+export interface user {
+    id: number,
+    username: string
+}
 
 export interface formUser {
     username: string,
@@ -40,14 +50,14 @@ export interface dataFolowUser extends response {
     }
 }
 
-export interface dataUnflowUser extends dataFolowUser{}
+export interface dataUnflowUser extends dataFolowUser { }
 
+export interface dataGetFollowers extends response {
+    data: follower[]
+}
 
 export interface dataSearchUser extends response {
-    data: [{
-        id: number,
-        username: string    
-    }]
+    data: user[]
 }
 
 export interface dataChangePrivacity extends response {
@@ -56,3 +66,4 @@ export interface dataChangePrivacity extends response {
         username: string
     }
 }
+

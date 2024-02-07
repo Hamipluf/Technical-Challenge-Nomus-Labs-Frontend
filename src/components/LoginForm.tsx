@@ -20,7 +20,7 @@ const LoginForm: React.FC<{
       if (!data.success) {
         return toast.error(data.message);
       }
-      data.success && navigate("/home");
+      data.success && data.data && navigate("/home");
     },
   });
 

@@ -1,13 +1,11 @@
 import axios from 'axios'
-import { getLikesOfPost as getLikeOfPostInterfa } from '../../interfaces/posts';
-// URL
+import { dataGetFollowers } from '../../interfaces/user';
 import { url_produciton } from '../baseUrl';
-export const getLikesOfPost = async (params: any): Promise<getLikeOfPostInterfa> => {
+export const getFollowers = async (): Promise<dataGetFollowers> => {
     const token = localStorage.getItem('jwt')
-    const postId: number = params.queryKey[1]
     try {
         const response = await axios.get(
-            `${url_produciton}/api/posts/getPostLikes/${postId}`,
+            `${url_produciton}/api/users/followers`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`

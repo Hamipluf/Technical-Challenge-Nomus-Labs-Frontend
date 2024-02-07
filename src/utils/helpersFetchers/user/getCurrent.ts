@@ -12,6 +12,10 @@ export const getCurrent = async (): Promise<currentUser> => {
                 }
             }
         );
+        if (response.data.data.token) {
+            localStorage.setItem("jwt", response.data.data.token);
+            localStorage.setItem("uid", response.data.data.currentUserId);
+        }
         return response.data
     } catch (error: any) {
         return error.response.data;

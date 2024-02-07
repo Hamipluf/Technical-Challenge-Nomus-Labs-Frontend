@@ -3,7 +3,7 @@ interface response {
     code: number,
     message: string,
 }
-interface posts {
+export interface posts {
     id: number,
     content: string,
     created_at: Date,

@@ -1,102 +1,130 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getFeed } from "../utils/helpersFetchers/posts/getFeed";
 import { useQuery } from "@tanstack/react-query";
-// Interfaces
-import { dataFeed } from "../utils/interfaces/posts";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-const Feed = () => {
-  const dataFeed = useQuery<dataFeed, Error>({
-    queryKey: ["feed"],
+import InfiniteScroll from "react-infinite-scroll-component";
+import LikeButton from "../components/LikeButtom";
+import SearchUser from "./SearchUsers";
+import { searchUserByUsername } from "../utils/helpersFetchers/user/searchUserByUsername";
+import { useDebouncedCallback } from "use-debounce";
+import { user } from "../utils/interfaces/user";
+import CommentButton from "./CommentButton";
+const Feed: React.FC = () => {
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [userFound, setUserFound] = useState<user[]>();
+  const {
+    isLoading,
+    error,
+    data: feedItems,
+  } = useQuery({
+    queryKey: ["feed", limit, offset],
     queryFn: getFeed,
+    refetchOnWindowFocus: true,
+  });
+  const { data: searchResults, isLoading: loadingSearhcUser } = useQuery({
+    queryKey: ["users", searchQuery],
+    queryFn: searchUserByUsername,
+    enabled: !!searchQuery,
   });
 
-  
-
   useEffect(() => {
-    if (!dataFeed.data?.success) {
-      toast.error(dataFeed.data?.message);
+    if (searchResults?.success) {
+      setUserFound(searchResults?.data);
+    } else {
+      setUserFound([]);
     }
-  }, [dataFeed.data?.success]);
+  }, [searchResults]);
 
-  const feedItems = [{ content: "Message" }];
+  const handleUserSearch = useDebouncedCallback((query: string) => {
+    setSearchQuery(query);
+  }, 400);
+
+  const handleLoadMore = () => {
+    const totalDocuments = feedItems?.data?.posts.length || 0;
+    if (totalDocuments) {
+      // No more documents, disable loading
+      return;
+    }
+    setOffset(offset + limit);
+  };
 
   return (
-    <>
-      <div className="w-3/4 mx-auto min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Feed</h1>
-        {feedItems.map((item, index) => (
-          <div key={index} className="p-2">
-            <div className="flex w-full items-center justify-between border-b pb-3">
-              <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]"></div>
-                <div className="text-lg font-bold text-slate-700">
-                  Joe Smith
-                </div>
-              </div>
-              <div className="flex items-center space-x-8">
-                <div className="text-xs text-neutral-500">2 hours ago</div>
-              </div>
-            </div>
+    <div className="w-3/4 mx-auto min-h-screen">
+      <h1 className="text-2xl font-bold my-2">Feed</h1>
 
-            <div className="mt-4 mb-6">
-              <div className="mb-3 text-xl font-bold">
-                Nulla sed leo tempus, feugiat velit vel, rhoncus neque?
-              </div>
-              <div className="text-sm text-neutral-600">
-                Aliquam a tristique sapien, nec bibendum urna. Maecenas
-                convallis dignissim turpis, non suscipit mauris interdum at.
-                Morbi sed gravida nisl, a pharetra nulla. Etiam tincidunt turpis
-                leo, ut mollis ipsum consectetur quis. Etiam faucibus est risus,
-                ac condimentum mauris consequat nec. Curabitur eget feugiat
-                massa
-              </div>
-            </div>
+      <SearchUser
+        onSearch={handleUserSearch}
+        users={userFound}
+        isLoading={loadingSearhcUser}
+      />
 
-            <div>
-              <div className="flex items-center justify-between text-slate-500">
-                <div className="flex space-x-4 md:space-x-8">
-                  <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mr-1.5 h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                      />
-                    </svg>
-                    <span>125</span>
-                  </div>
-                  <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="mr-1.5 h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                      />
-                    </svg>
-                    <span>4</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {isLoading && (
+        <>
+          <div className="flex flex-col gap-4 m-5">
+            <div className="skeleton h-32 w-full"></div>
+            <div className="skeleton h-4 w-28"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
+          </div>{" "}
+          <div className="flex flex-col gap-4 m-5 my-4">
+            <div className="skeleton h-32 w-full"></div>
+            <div className="skeleton h-4 w-28"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
           </div>
-        ))}
-      </div>
-    </>
+        </>
+      )}
+      {!feedItems?.success && (
+        <>
+          <p className="text-xl font-bold text-error">{feedItems?.message}</p>
+        </>
+      )}
+      {feedItems?.success && (
+        <InfiniteScroll
+          dataLength={feedItems?.data.posts.length || 0}
+          next={handleLoadMore}
+          hasMore={feedItems?.data.posts.length > limit * offset}
+          loader={false}
+        >
+          {feedItems?.data.posts.map((item) => {
+            const createdAt = new Date(item.created_at);
+            return (
+              <div key={item.id} className="p-4 my-2 w-11/12 bg-slate-700 ">
+                <div className="flex w-full items-center justify-between border-b pb-3 ">
+                  <div className="flex items-center space-x-3">
+                    <div className="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]"></div>
+                    <div className="text-lg font-bold text-slate-50">
+                      {item.username}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-8">
+                    <div className="text-xs text-slate-400">
+                      {createdAt.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 mb-6">
+                  <div className="text-sm text-slate-50">{item.content}</div>
+                </div>
+
+                <div>
+                  <div className="flex items-start justify-between text-slate-500">
+                    <div>
+                      <CommentButton postId={item.id} />
+                    </div>
+                    <div>
+                      <LikeButton postId={item.id} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </InfiniteScroll>
+      )}
+    </div>
   );
 };
 
