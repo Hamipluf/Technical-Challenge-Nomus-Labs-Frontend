@@ -7,15 +7,21 @@ import CommentButton from "../comment/CommentButton";
 import SearchUser from "./SearchUsers";
 import { searchUserByUsername } from "../../utils/helpersFetchers/user/searchUserByUsername";
 import { useDebouncedCallback } from "use-debounce";
-import { user } from "../../utils/interfaces/user";
+import { currentUser, user } from "../../utils/interfaces/user";
 import SkeletonLoader from "../layout/SkeletonLoader";
+import CreatePost from "../post/CreatePost";
+import DeletePostButton from "../post/DeletePostButton";
+import { getCurrent } from "../../utils/helpersFetchers/user/getCurrent";
 
 const Feed: React.FC = () => {
   const [offset, setOffset] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [userFound, setUserFound] = useState<user[]>([]);
   const limit = 10;
-
+  const { data: currentData } = useQuery<currentUser>({
+    queryKey: ["current"],
+    queryFn: getCurrent,
+  });
   const { isLoading, data: feedItems } = useQuery({
     queryKey: ["feed", limit, offset],
     queryFn: getFeed,
@@ -73,19 +79,22 @@ const Feed: React.FC = () => {
                 <div className="text-xs text-slate-400">
                   {new Date(item.created_at).toLocaleString()}
                 </div>
+                <div>
+                  {currentData?.data.user.username === item.username && (
+                    <DeletePostButton pid={item.id} />
+                  )}
+                </div>
               </div>
             </div>
             <div className="mt-4 mb-6">
               <div className="text-sm text-slate-50">{item.content}</div>
             </div>
-            <div>
-              <div className="">
-                <div>
-                  <LikeButton postId={item.id} />
-                </div>
-                <div>
-                  <CommentButton postId={item.id} />
-                </div>
+            <div className="">
+              <div>
+                <LikeButton postId={item.id} />
+              </div>
+              <div>
+                <CommentButton postId={item.id} />
               </div>
             </div>
           </div>
@@ -102,6 +111,7 @@ const Feed: React.FC = () => {
         users={userFound}
         isLoading={loadingSearchUser}
       />
+      <CreatePost />
       {isLoading && (
         <>
           <div className="flex flex-col gap-4 m-5">{renderSkeletons()}</div>

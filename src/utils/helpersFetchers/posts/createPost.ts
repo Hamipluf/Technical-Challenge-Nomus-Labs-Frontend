@@ -1,12 +1,17 @@
 import axios from 'axios'
-import { createPost, dataCreatePost } from '../../interfaces/posts';
+import { createPost as createPostInteface, dataCreatePost } from '../../interfaces/posts';
 // URL
 import { url_produciton } from '../baseUrl';
-export const register = async (data: createPost): Promise<dataCreatePost> => {
+export const createPost = async (data: createPostInteface): Promise<dataCreatePost> => {
+    const token = localStorage.getItem('jwt')
     try {
         const response = await axios.post(
             `${url_produciton}/api/posts/createPost`,
-            data
+            data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
         );
         return response.data
     } catch (error: any) {

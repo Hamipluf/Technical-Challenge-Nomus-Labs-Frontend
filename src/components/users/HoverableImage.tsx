@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
+
 const HoverableImage: React.FC<{
-  imageSrc: string;
+  imageSrc?: string;
   alt: string;
   width: string;
   height: string;
