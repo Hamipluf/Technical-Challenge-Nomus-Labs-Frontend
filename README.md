@@ -9,7 +9,7 @@ This project implements a Simple Social Network using Node.js and React.js, feat
 - Node.js
 - React.js
 - PostgreSQL
-
+- AWS S3
 
 ## Implemented Features
 
@@ -35,6 +35,10 @@ This project implements a Simple Social Network using Node.js and React.js, feat
 
 7. **Notifications:**
    - Notifies users about new followers, comments, and "likes".
+
+8. **Profile Picture Upload with AWS S3:**
+   - Users can upload profile pictures using AWS S3 for storage.
+
 ## API Documentation
 
 Explore the API documentation at `/api-docs` for detailed information about the available endpoints and how to interact with them.
