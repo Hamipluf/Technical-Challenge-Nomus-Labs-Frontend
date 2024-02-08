@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { getFeed } from "../../utils/helpersFetchers/posts/getFeed";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LikeButton from "../layout/LikeButtom";
 import CommentButton from "../comment/CommentButton";
@@ -12,10 +12,19 @@ import SkeletonLoader from "../layout/SkeletonLoader";
 import CreatePost from "../post/CreatePost";
 import DeletePostButton from "../post/DeletePostButton";
 import { getCurrent } from "../../utils/helpersFetchers/user/getCurrent";
+import { toast } from "react-toastify";
+import {
+  dataUpdatePost,
+  updatePost as updatePostInteface,
+} from "../../utils/interfaces/posts";
+import { updatePost as updatePostFn } from "../../utils/helpersFetchers/posts/updatePost";
 
 const Feed: React.FC = () => {
+  const queryClient = useQueryClient();
   const [offset, setOffset] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [updatePost, setUpdatePost] = useState("");
+  const [editPostId, setEditPostId] = useState<number | undefined>(undefined);
   const [userFound, setUserFound] = useState<user[]>([]);
   const limit = 10;
   const { data: currentData } = useQuery<currentUser>({
@@ -34,6 +43,23 @@ const Feed: React.FC = () => {
     enabled: !!searchQuery,
   });
 
+  const editPostMutation = useMutation({
+    mutationKey: ["edit-post"],
+    mutationFn: updatePostFn,
+    onSuccess: (data: dataUpdatePost) => {
+      !data.success && toast.error(data.message);
+      if (data.success) {
+        setEditPostId(undefined);
+        setUpdatePost("");
+        toast.success(data.message);
+        // @ts-expect-error: Not have types
+        queryClient.invalidateQueries("feed");
+        // @ts-expect-error: Not have types
+        queryClient.refetchQueries("feed");
+      }
+    },
+  });
+
   useEffect(() => {
     if (searchResults?.success) {
       setUserFound(searchResults.data);
@@ -48,6 +74,19 @@ const Feed: React.FC = () => {
 
   const handleLoadMore = () => {
     setOffset(offset + limit);
+  };
+
+  const hanleUpdatePost = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (updatePost !== "" && editPostId) {
+      const editPost: updatePostInteface = {
+        newContent: updatePost,
+        pid: editPostId,
+      };
+      editPostMutation.mutate(editPost);
+    } else {
+      toast.error("Need edit the post.");
+    }
   };
 
   const renderSkeletons = () => {
@@ -81,13 +120,83 @@ const Feed: React.FC = () => {
                 </div>
                 <div>
                   {currentData?.data.user.username === item.username && (
-                    <DeletePostButton pid={item.id} />
+                    <div className="flex gap-x-4">
+                      <DeletePostButton pid={item.id} />
+                      <button
+                        onClick={() =>
+                          setEditPostId(
+                            editPostId === item.id ? undefined : item.id
+                          )
+                        } // Toggle para establecer o eliminar el ID del post en edición
+                        className="btn btn-square btn-sm btn-info"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="icon icon-tabler icon-tabler-edit"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                          <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                          <path d="M16 5l3 3" />
+                        </svg>
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             </div>
             <div className="mt-4 mb-6">
-              <div className="text-sm text-slate-50">{item.content}</div>
+              {editPostId == item.id ? (
+                <>
+                  <form onSubmit={(e) => hanleUpdatePost(e)}>
+                    <div className="w-full px-3 mb-2 mt-2">
+                      <textarea
+                        className="bg-gray-100 text-gray-900 rounded border border-gray-400 leading-normal resize-none w-full py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
+                        value={updatePost}
+                        onChange={(e) => setUpdatePost(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <div className="w-full flex flex-row-reverse px-3">
+                      {updatePost && (
+                        <>
+                          {editPostMutation.isPending ? (
+                            <>
+                              <span className="loading loading-ring loading-lg"></span>{" "}
+                            </>
+                          ) : (
+                            <>
+                              <input
+                                type="submit"
+                                className={`btn btn-info btn-sm`}
+                                value="Edit"
+                              />
+                            </>
+                          )}
+                        </>
+                      )}
+                      <button
+                        onClick={() => {
+                          setEditPostId(undefined);
+                          setUpdatePost("");
+                        }}
+                        className="btn btn-sm btn-error mx-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-sm text-slate-50">{item.content}</div>
+              )}
             </div>
             <div className="">
               <div>
@@ -101,8 +210,10 @@ const Feed: React.FC = () => {
         ))}
       </>
     );
-  }, [feedItems]);
+  }, [feedItems, editPostId, updatePost]);
+
   const posts = feedItems?.data?.posts || [];
+
   return (
     <div className="w-3/4 mx-auto min-h-screen">
       <h1 className="text-2xl font-bold my-2">Feed</h1>

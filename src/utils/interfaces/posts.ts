@@ -26,8 +26,9 @@ export interface feed {
 export interface createPost {
     content: string
 }
-export interface updatePost extends createPost {
-    pid: number
+export interface updatePost {
+    newContent: string
+    pid: number,
 }
 
 export interface dataCreatePost extends response {
