@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
   const navigate = useNavigate();
   return (
     <>

@@ -31,11 +31,7 @@ const Sidebar: React.FC = () => {
     );
   };
 
-  const handleLogout = () => {
-    console.log("logo");
-    // localStorage.clear();
-    // navigate("/");
-  };
+
 
   return (
     <div className="fixed top-0 z-40">
