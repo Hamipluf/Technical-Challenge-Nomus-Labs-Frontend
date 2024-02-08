@@ -61,11 +61,31 @@ function RegisterForm() {
       <div className="flex h-screen">
         <div className="w-full bg-slate-500 lg:w-1/2 flex items-center justify-center ">
           <div className="max-w-md w-full p-6 text-light">
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-square btn-sm my-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-arrow-back"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1" />
+              </svg>
+            </button>
             <h1 className="text-3xl font-semibold mb-6 text-center">
-              Registrarse.
+              Sign up.
             </h1>
             <h1 className="text-sm font-semibold mb-6 text-midLigth text-center">
-              Empieza a gestionar tu negocio de la forma mas facil.
+              Start to know the world with Nomus Labs Social Media.
             </h1>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
@@ -117,7 +137,7 @@ function RegisterForm() {
               </div>
             </div>
             <div className="mt-4 text-sm text-gray-600 text-center">
-              <div className="divider divider-primary"></div>
+              <div className="divider divider-primary">or</div>
             </div>
             <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
               <div className="flex flex-col gap-y-2">

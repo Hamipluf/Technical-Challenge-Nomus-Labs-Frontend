@@ -313,12 +313,30 @@ const LoginForm: React.FC<{
         </div>
         <div className="w-full bg-slate-300 lg:w-1/2 flex items-center justify-center rounded-lg">
           <div className="max-w-md w-full p-6">
-            <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-              Bienvenido a RestoSync
-            </h1>
-            <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
-              Sincroniza tu exito culinario...
-            </h1>
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-square btn-sm my-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-arrow-back"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1" />
+              </svg>
+            </button>
+            <h2 className="text-3xl font-semibold mb-6 text-black text-center">
+              Welcome to Nomus Labs Social Media
+            </h2>
+
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
                 <button

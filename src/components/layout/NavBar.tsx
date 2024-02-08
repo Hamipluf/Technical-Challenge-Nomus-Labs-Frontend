@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <div className="mx-auto my-3 lg:max-w-7xl w-full px-5 sm:px-10 md:px-12 lg:px-5">
@@ -14,7 +15,7 @@ const NavBar: React.FC = () => {
                 src="https://media.licdn.com/dms/image/C4E0BAQEWXlVSavMv_g/company-logo_200_200/0/1638278115694?e=1715212800&v=beta&t=ilai4K9qJY9aPK4-0ERC_coUN7z2Krm3oPyWKp9PJ_U"
                 alt="Logo Nomus Labs"
               />
-              <div className="inline-flex text-lg font-semibold text-gray-900 text-white">
+              <div className="inline-flex text-lg font-semibold text-white">
                 Nomus Labs
               </div>
             </Link>
@@ -70,26 +71,77 @@ const NavBar: React.FC = () => {
             </button>
           </div>
 
-          <div className="min-w-max flex items-center gap-x-3">
-            <button
-              data-toggle-navbar
-              data-is-open="false"
-              className="lg:hidden lg:invisible outline-none w-7 h-auto flex flex-col relative"
-            >
-              <span
-                id="line-1"
-                className="w-6 h-0.5 rounded-full bg-gray-700 transition-all duration-300 ease-linear"
-              ></span>
-              <span
-                id="line-2"
-                className="w-6 origin-center  mt-1 h-0.5 rounded-ful bg-gray-700 transition-all duration-300 ease-linear"
-              ></span>
-              <span
-                id="line-3"
-                className="w-6 mt-1 h-0.5 rounded-ful bg-gray-700 transition-all duration-300 ease-linear"
-              ></span>
-              <span className="sr-only">togglenav</span>
-            </button>
+          <div className="flex items-center gap-x-3">
+            <div className="dropdown dropdown-end ">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn m-1 lg:hidden lg:invisible "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-menu-2"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 6l16 0" />
+                  <path d="M4 12l16 0" />
+                  <path d="M4 18l16 0" />
+                </svg>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-80 mt-5 z-10"
+              >
+                <li>
+                  <Link
+                    to="/"
+                    className="duration-300 font-medium ease-linear hover:text-white py-3"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    className="duration-300 font-medium ease-linear hover:text-white py-3"
+                  >
+                    Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    className="duration-300 font-medium ease-linear hover:text-white py-3"
+                  >
+                    About us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    className="duration-300 font-medium ease-linear hover:text-white py-3"
+                  >
+                    Features
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/login"
+                    className="flex justify-center p-2 bg-primary font-bold m-4 text-white"
+                  >
+                    Login
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </nav>
       </div>
