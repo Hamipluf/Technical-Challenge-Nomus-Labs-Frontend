@@ -11,20 +11,6 @@ This project implements a Simple Social Network using Node.js and React.js, feat
 - PostgreSQL
 - AWS S3
 
-
-# Simple Social Network Project
-
-## Description
-
-This project implements a Simple Social Network using Node.js and React.js, featuring basic functionalities such as user registration, login, user search, message posting, following and unfollowing other users, and a feed displaying posts from followed users. Additionally, it includes real-time notifications, direct messaging, and storage of messages in a PostgreSQL database.
-
-## Technologies Used
-
-- Node.js
-- React.js
-- PostgreSQL
-- AWS S3
-
 ## Implemented Features
 
 1. **Registration and Login:**
